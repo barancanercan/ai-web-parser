@@ -50,7 +50,7 @@ Projenin çalışması için API anahtarları gibi hassas bilgileri içeren bir 
 OPENAI_API_KEY="sk-..."
 ```
 
-### 5. Kullanım
+### 5. Kullanım (CLI)
 
 Proje, bir komut satırı arayüzü (CLI) üzerinden çalışır. Aşağıda temel bir kullanım örneği bulunmaktadır:
 
@@ -60,6 +60,48 @@ python -m interfaces.cli.main --url "https://www.ornek-hedef-site.com" --parser 
 
 - `--url`: Veri çıkarmak istediğiniz hedef web sayfasının adresi.
 - `--parser`: Kullanmak istediğiniz yapay zeka modelini belirtir (`openai` veya `ollama`).
+
+### 6. Streamlit Arayüzünü Çalıştırma (Opsiyonel)
+
+Proje ayrıca, işlemleri daha kolay hale getiren bir web arayüzü içerir. Arayüzü başlatmak için projenin ana dizininde olmanız ve Python'un modülleri bulabilmesi için `PYTHONPATH`'i ayarlamanız gerekir.
+
+Aşağıdaki komutlardan sisteminize uygun olanı kullanın:
+
+**Linux / macOS:**
+```bash
+PYTHONPATH="." streamlit run interfaces/cli/main.py
+```
+
+**Windows (PowerShell):**
+```bash
+$env:PYTHONPATH = "."
+streamlit run interfaces/cli/main.py
+```
+
+**Windows (CMD):**
+```bash
+set PYTHONPATH=.
+streamlit run interfaces/cli/main.py
+```
+
+#### Sorun Giderme: `ModuleNotFoundError`
+
+Eğer `ModuleNotFoundError: No module named 'infrastructure'` gibi bir hata alırsanız, bunun iki ana sebebi olabilir:
+
+1.  **`PYTHONPATH` Ayarlanmamış**: Python, `infrastructure` gibi proje modüllerini nerede bulacağını bilmiyordur. Yukarıdaki komutları kullanarak `PYTHONPATH`'i doğru şekilde ayarladığınızdan emin olun.
+2.  **`__init__.py` Dosyaları Eksik**: Python'un bir dizini paket olarak tanıması için içinde (boş bile olsa) bir `__init__.py` dosyası olması gerekir. Projenin `app`, `infrastructure`, `interfaces` gibi tüm ana dizinlerinde bu dosyanın bulunduğunu doğrulayın.
+
+**Hızlı Teşhis:** Streamlit'i çalıştırmadan önce, Python'un modülü bulabildiğini test etmek için aşağıdaki komutu çalıştırabilirsiniz:
+
+```bash
+# Linux/macOS
+PYTHONPATH="." python -c "from infrastructure.scraping.chrome_scraper import srape_with_chreme"
+
+# Windows
+set PYTHONPATH=. && python -c "from infrastructure.scraping.chrome_scraper import srape_with_chreme"
+```
+Bu komut hata vermeden çalışıyorsa, Streamlit de çalışacaktır.
+
 
 ## 🔮 Gelecek Planları
 
